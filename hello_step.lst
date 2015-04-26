@@ -1,0 +1,210 @@
+---------------------------------------------
+PIC ASSEMBLER LISTING
+Line    Address Opcode  Instruction
+---------------------------------------------
+0001    0000            ; Compiled with: PIC Simulator IDE v7.37
+0002    0000            ; Microcontroller model: PIC16F84A
+0003    0000            ; Clock frequency: 4.0MHz
+0004    0000            ;
+0005    0000            	R0L EQU 0x00C
+0006    0000            	R0H EQU 0x00D
+0007    0000            	R4L EQU 0x014
+0008    0000            	R4H EQU 0x015
+0009    0000            	R5L EQU 0x016
+0010    0000            	R0HL EQU 0x00C
+0011    0000            	R4HL EQU 0x014
+0012    0000            	LONG_0 EQU 0x017
+0013    0000            	LONG_1 EQU 0x018
+0014    0000            	LONG_2 EQU 0x019
+0015    0000            	LONG_3 EQU 0x01A
+0016    0000            	LONG2_0 EQU 0x01B
+0017    0000            	LONG2_1 EQU 0x01C
+0018    0000            	LONG2_2 EQU 0x01D
+0019    0000            	LONG2_3 EQU 0x01E
+0020    0000            	LONG1 EQU 0x017
+0021    0000            	LONG2 EQU 0x01B
+0022    0000            	REGSTEP EQU 0x00E
+0023    0000            	ORG 0x0000
+0024    0000    120A    	BCF PCLATH,4
+0025    0001    118A    	BCF PCLATH,3
+0026    0002    2805    	GOTO L0002
+0027    0003            	ORG 0x0004
+0028    0004    0009    	RETFIE
+0029    0005            ; User code start
+0030    0005            L0002:
+0031    0005            ; 1: AllDigital
+0032    0005            ; 2: Define STEP_A_REG = PORTB
+0033    0005            ; 3: Define STEP_A_BIT = 7
+0034    0005            ; 4: Define STEP_B_REG = PORTB
+0035    0005            ; 5: Define STEP_B_BIT = 6
+0036    0005            ; 6: Define STEP_C_REG = PORTB
+0037    0005            ; 7: Define STEP_C_BIT = 5
+0038    0005            ; 8: Define STEP_D_REG = PORTB
+0039    0005            ; 9: Define STEP_D_BIT = 4
+0040    0005            ; 10: Define STEP_MODE = 1
+0041    0005            ; 11: 
+0042    0005            ; 12: ConfigPin PORTB.1 = Output  'LED
+0043    0005    1683    	BSF STATUS,RP0
+0044    0006    1086    	BCF TRISB,1
+0045    0007    1283    	BCF STATUS,RP0
+0046    0008            ; 13: 
+0047    0008            ; 14: WaitMs 1000
+0048    0008    30E8    	MOVLW 0xE8
+0049    0009    008C    	MOVWF R0L
+0050    000A    3003    	MOVLW 0x03
+0051    000B    008D    	MOVWF R0H
+0052    000C    204D    	CALL W001
+0053    000D            ; 15: StepHold
+0054    000D    1786    	BSF PORTB,7
+0055    000E    1706    	BSF PORTB,6
+0056    000F    1286    	BCF PORTB,5
+0057    0010    1206    	BCF PORTB,4
+0058    0011    1683    	BSF STATUS,RP0
+0059    0012    1386    	BCF TRISB,7
+0060    0013    1306    	BCF TRISB,6
+0061    0014    1286    	BCF TRISB,5
+0062    0015    1206    	BCF TRISB,4
+0063    0016    1283    	BCF STATUS,RP0
+0064    0017    018E    	CLRF REGSTEP
+0065    0018            ; 16: WaitMs 1000
+0066    0018    30E8    	MOVLW 0xE8
+0067    0019    008C    	MOVWF R0L
+0068    001A    3003    	MOVLW 0x03
+0069    001B    008D    	MOVWF R0H
+0070    001C    204D    	CALL W001
+0071    001D            ; 17: 
+0072    001D            ; 18: loop:
+0073    001D            L0001:
+0074    001D            ; 19: StepCCW 16, 300
+0075    001D    3010    	MOVLW 0x10
+0076    001E    0096    	MOVWF R5L
+0077    001F    0896    	MOVF R5L,F
+0078    0020    1903    	BTFSC STATUS,Z
+0079    0021    2828    	GOTO L0004
+0080    0022            L0003:
+0081    0022    205D    	CALL ST02
+0082    0023    3062    	MOVLW 0x62
+0083    0024    0094    	MOVWF R4L
+0084    0025    2041    	CALL DL01
+0085    0026    0B96    	DECFSZ R5L,F
+0086    0027    2822    	GOTO L0003
+0087    0028            L0004:
+0088    0028            ; 20: PORTB.1 = 1
+0089    0028    1486    	BSF PORTB,1
+0090    0029            ; 21: WaitUs 1000
+0091    0029    3062    	MOVLW 0x62
+0092    002A    0094    	MOVWF R4L
+0093    002B    3000    	MOVLW 0x00
+0094    002C    0095    	MOVWF R4H
+0095    002D    2044    	CALL DL02
+0096    002E            ; 22: StepCW 24, 300
+0097    002E    3018    	MOVLW 0x18
+0098    002F    0096    	MOVWF R5L
+0099    0030    0896    	MOVF R5L,F
+0100    0031    1903    	BTFSC STATUS,Z
+0101    0032    2839    	GOTO L0006
+0102    0033            L0005:
+0103    0033    205B    	CALL ST01
+0104    0034    3062    	MOVLW 0x62
+0105    0035    0094    	MOVWF R4L
+0106    0036    2041    	CALL DL01
+0107    0037    0B96    	DECFSZ R5L,F
+0108    0038    2833    	GOTO L0005
+0109    0039            L0006:
+0110    0039            ; 23: PORTB.1 = 0
+0111    0039    1086    	BCF PORTB,1
+0112    003A            ; 24: WaitUs 1000
+0113    003A    3062    	MOVLW 0x62
+0114    003B    0094    	MOVWF R4L
+0115    003C    3000    	MOVLW 0x00
+0116    003D    0095    	MOVWF R4H
+0117    003E    2044    	CALL DL02
+0118    003F            ; 25: Goto loop
+0119    003F    281D    	GOTO L0001
+0120    0040            ; End of user code
+0121    0040    2840    L0007:	GOTO L0007
+0122    0041            ;
+0123    0041            ;
+0124    0041            ; Delay Routine Byte
+0125    0041            ; minimal routine execution time: 8탎
+0126    0041            ; routine execution time step: 3탎
+0127    0041            ; maximal routine execution time: 770탎
+0128    0041            DL01:
+0129    0041    0B94    	DECFSZ R4L,F
+0130    0042    2841    	GOTO DL01
+0131    0043    0008    	RETURN
+0132    0044            ; Delay Routine Word
+0133    0044            ; minimal routine execution time: 15탎
+0134    0044            ; routine execution time step: 10탎
+0135    0044            ; maximal routine execution time: 655365탎
+0136    0044            DL02:
+0137    0044    3001    	MOVLW 0x01
+0138    0045    0294    	SUBWF R4L,F
+0139    0046    0100    	CLRW
+0140    0047    1C03    	BTFSS STATUS,C
+0141    0048    3E01    	ADDLW 0x01
+0142    0049    0295    	SUBWF R4H,F
+0143    004A    1C03    	BTFSS STATUS,C
+0144    004B    0008    	RETURN
+0145    004C    2844    	GOTO DL02
+0146    004D            ; Waitms Routine
+0147    004D    3001    W001:	MOVLW 0x01
+0148    004E    028C    	SUBWF R0L,F
+0149    004F    0100    	CLRW
+0150    0050    1C03    	BTFSS STATUS,C
+0151    0051    3E01    	ADDLW 0x01
+0152    0052    028D    	SUBWF R0H,F
+0153    0053    1C03    	BTFSS STATUS,C
+0154    0054    0008    	RETURN
+0155    0055    3061    	MOVLW 0x61
+0156    0056    0094    	MOVWF R4L
+0157    0057    3000    	MOVLW 0x00
+0158    0058    0095    	MOVWF R4H
+0159    0059    2044    	CALL DL02
+0160    005A    284D    	GOTO W001
+0161    005B            ;
+0162    005B            ;
+0163    005B            ; Stepper Routine
+0164    005B    0A8E    ST01:	INCF REGSTEP,F
+0165    005C    285E    	GOTO ST03
+0166    005D    038E    ST02:	DECF REGSTEP,F
+0167    005E            ST03:
+0168    005E    188E    	BTFSC REGSTEP,1
+0169    005F    2863    	GOTO ST04
+0170    0060    180E    	BTFSC REGSTEP,0
+0171    0061    286B    	GOTO ST21
+0172    0062    2866    	GOTO ST20
+0173    0063            ST04:
+0174    0063    180E    	BTFSC REGSTEP,0
+0175    0064    2875    	GOTO ST23
+0176    0065    2870    	GOTO ST22
+0177    0066            ST20:
+0178    0066    1786    	BSF PORTB,7
+0179    0067    1706    	BSF PORTB,6
+0180    0068    1286    	BCF PORTB,5
+0181    0069    1206    	BCF PORTB,4
+0182    006A    0008    	RETURN
+0183    006B            ST21:
+0184    006B    1386    	BCF PORTB,7
+0185    006C    1706    	BSF PORTB,6
+0186    006D    1686    	BSF PORTB,5
+0187    006E    1206    	BCF PORTB,4
+0188    006F    0008    	RETURN
+0189    0070            ST22:
+0190    0070    1386    	BCF PORTB,7
+0191    0071    1306    	BCF PORTB,6
+0192    0072    1686    	BSF PORTB,5
+0193    0073    1606    	BSF PORTB,4
+0194    0074    0008    	RETURN
+0195    0075            ST23:
+0196    0075    1786    	BSF PORTB,7
+0197    0076    1306    	BCF PORTB,6
+0198    0077    1286    	BCF PORTB,5
+0199    0078    1606    	BSF PORTB,4
+0200    0079    0008    	RETURN
+0201    007A            ;
+0202    007A            ;
+0203    007A            ; End of listing
+0204    007A            	END
+---------------------------------------------
+Number of errors = 0
